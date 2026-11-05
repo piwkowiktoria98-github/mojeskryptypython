@@ -1,0 +1,733 @@
+<title>Brand OS</title>
+<style>
+:root {
+  --ground: #FAFAFA;
+  --ink: #1C1F2B;
+  --slate: #6B6E7F;
+  --accent: #C17D2F;
+  --accent-hover: #A8681F;
+  --accent-soft: rgba(193,125,47,0.09);
+  --surface: #FFFFFF;
+  --surface-2: #F3F3F5;
+  --border: #E4E4E8;
+  --deep: #1C1F2B;
+  --deep-text: #E2E3EA;
+  --deep-muted: #9597A5;
+  --green: #2D7A4F;
+  --green-bg: rgba(45,122,79,0.08);
+  --red: #B5423A;
+  --shadow: 0 1px 3px rgba(28,31,43,0.07), 0 0 0 1px rgba(28,31,43,0.04);
+  --shadow-lg: 0 4px 16px rgba(28,31,43,0.10), 0 0 0 1px rgba(28,31,43,0.04);
+  --radius: 8px;
+  --font-display: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-body: Georgia, 'Noto Serif', 'Times New Roman', serif;
+  --font-mono: 'Cascadia Code', 'SF Mono', Consolas, monospace;
+}
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #111318;
+    --ink: #E2E3EA;
+    --slate: #8E90A0;
+    --accent: #D89540;
+    --accent-hover: #E5A552;
+    --accent-soft: rgba(216,149,64,0.12);
+    --surface: #1A1D28;
+    --surface-2: #222532;
+    --border: #2E3146;
+    --deep: #0D0F15;
+    --deep-text: #E2E3EA;
+    --deep-muted: #7C7E8E;
+    --green: #5CB87A;
+    --green-bg: rgba(92,184,122,0.10);
+    --red: #E0625A;
+    --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
+    --shadow-lg: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #111318;
+  --ink: #E2E3EA;
+  --slate: #8E90A0;
+  --accent: #D89540;
+  --accent-hover: #E5A552;
+  --accent-soft: rgba(216,149,64,0.12);
+  --surface: #1A1D28;
+  --surface-2: #222538;
+  --border: #2E3146;
+  --deep: #0D0F15;
+  --deep-text: #E2E3EA;
+  --deep-muted: #7C7E8E;
+  --green: #5CB87A;
+  --green-bg: rgba(92,184,122,0.10);
+  --red: #E0625A;
+  --shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:1rem;line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* Top bar */
+.topbar{position:sticky;top:0;background:var(--surface);border-bottom:1px solid var(--border);z-index:50;padding:0 24px;height:56px;display:flex;align-items:center;gap:20px}
+.topbar-logo{font-family:var(--font-display);font-weight:800;font-size:1rem;letter-spacing:-0.03em;color:var(--ink);flex-shrink:0}
+.topbar-logo span{color:var(--accent)}
+.topbar-steps{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border);transition:all .3s}
+.step-dot.done{background:var(--green)}
+.step-dot.active{background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.step-label{font-family:var(--font-display);font-size:.72rem;color:var(--slate);margin-left:8px;white-space:nowrap}
+
+/* Layout */
+.view{max-width:720px;margin:0 auto;padding:48px 24px 80px}
+.view.wide{max-width:900px}
+
+/* Welcome */
+.welcome{display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:80px}
+.welcome h1{font-family:var(--font-display);font-size:clamp(2rem,5vw,2.8rem);font-weight:800;letter-spacing:-0.04em;line-height:1.1;margin-bottom:16px;text-wrap:balance}
+.welcome h1 span{color:var(--accent)}
+.welcome p{font-size:1.05rem;color:var(--slate);max-width:520px;margin-bottom:36px;line-height:1.65}
+
+/* Buttons */
+.btn{font-family:var(--font-display);font-weight:700;font-size:.88rem;padding:12px 32px;border-radius:6px;border:none;cursor:pointer;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-secondary{background:var(--surface-2);color:var(--ink);border:1px solid var(--border)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+.btn-ghost{background:none;color:var(--slate);padding:12px 16px}
+.btn-ghost:hover{color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-row{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+
+/* Form */
+.form-group{margin-bottom:24px}
+.form-label{display:block;font-family:var(--font-display);font-size:.82rem;font-weight:700;color:var(--ink);margin-bottom:6px}
+.form-hint{font-size:.78rem;color:var(--slate);margin-bottom:8px;font-family:var(--font-display)}
+input[type="text"],textarea{width:100%;font-family:var(--font-body);font-size:.95rem;padding:12px 16px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--ink);transition:border-color .15s;line-height:1.6}
+input[type="text"]:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+textarea{min-height:80px;resize:vertical}
+select{width:100%;font-family:var(--font-display);font-size:.88rem;padding:12px 16px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--ink);cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B6E7F' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+select:focus{outline:none;border-color:var(--accent)}
+
+/* Section heading */
+.step-header{margin-bottom:32px}
+.step-eyebrow{font-family:var(--font-display);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);margin-bottom:8px}
+.step-title{font-family:var(--font-display);font-size:1.5rem;font-weight:800;letter-spacing:-0.025em;line-height:1.2;margin-bottom:8px;text-wrap:balance}
+.step-desc{color:var(--slate);font-size:.94rem}
+
+/* Loading */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 24px;text-align:center}
+.loader{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin-bottom:20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-family:var(--font-display);font-size:.88rem;color:var(--slate);transition:opacity .3s}
+
+/* Cards selectable */
+.option-grid{display:grid;gap:14px;margin:24px 0}
+.option-card{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:24px;cursor:pointer;transition:all .15s;position:relative}
+.option-card:hover{border-color:var(--accent);box-shadow:var(--shadow)}
+.option-card.selected{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent)}
+.option-card .card-badge{position:absolute;top:12px;right:12px;font-family:var(--font-display);font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:3px;opacity:0;transition:opacity .15s}
+.option-card.selected .card-badge{opacity:1}
+.option-card h3{font-family:var(--font-display);font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--ink)}
+.option-card p{font-size:.88rem;line-height:1.6;color:var(--slate);margin-bottom:8px}
+.option-card .pillars{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.option-card .pill{font-family:var(--font-display);font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:3px;background:var(--surface-2);color:var(--slate);border:1px solid var(--border)}
+
+/* Research results */
+.research-block{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:16px}
+.research-block h3{font-family:var(--font-display);font-size:.92rem;font-weight:700;color:var(--ink);margin-bottom:10px}
+.research-block ul{margin-left:18px}
+.research-block li{font-size:.9rem;margin-bottom:6px;color:var(--ink)}
+.research-block li::marker{color:var(--accent)}
+
+/* Naming scores */
+.name-card{display:grid;grid-template-columns:1fr auto;align-items:center;gap:16px}
+.name-scores{display:flex;gap:12px}
+.score-item{text-align:center;font-family:var(--font-display)}
+.score-val{font-size:.88rem;font-weight:800;color:var(--accent)}
+.score-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.06em;color:var(--slate);margin-top:1px}
+
+/* Voice profile */
+.voice-trait{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.voice-trait:last-child{border-bottom:none}
+.voice-trait .trait-name{font-family:var(--font-display);font-size:.88rem;font-weight:700;color:var(--ink);min-width:140px}
+.voice-trait .trait-desc{font-size:.86rem;color:var(--slate)}
+
+/* Color swatches */
+.palette{display:flex;gap:8px;margin:12px 0}
+.swatch{width:36px;height:36px;border-radius:6px;border:1px solid var(--border)}
+
+/* Dashboard */
+.dna-section{margin-bottom:32px}
+.dna-section h3{font-family:var(--font-display);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.dna-value{font-size:.95rem;line-height:1.7;margin-bottom:8px}
+.dna-tag{display:inline-block;font-family:var(--font-display);font-size:.78rem;font-weight:600;padding:4px 14px;border-radius:4px;background:var(--surface-2);border:1px solid var(--border);color:var(--ink);margin:3px 4px 3px 0}
+.dna-approved{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-display);font-size:.7rem;font-weight:700;color:var(--green);background:var(--green-bg);padding:3px 10px;border-radius:3px;margin-bottom:12px}
+
+/* Animations */
+.fade-in{animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* CTA bar */
+.cta-bar{background:var(--deep);color:var(--deep-text);border-radius:var(--radius);padding:28px 32px;margin-top:40px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-bar p{font-family:var(--font-display);font-size:.92rem;color:var(--deep-muted);max-width:400px}
+.cta-bar p strong{color:var(--deep-text)}
+
+/* Responsive */
+@media(max-width:600px){
+  .view{padding:32px 16px 60px}
+  .topbar{padding:0 16px}
+  .step-label{display:none}
+  .name-card{grid-template-columns:1fr;gap:8px}
+  .name-scores{justify-content:flex-start}
+  .cta-bar{flex-direction:column;text-align:center}
+  .cta-bar p{max-width:100%}
+  .voice-trait{flex-direction:column;align-items:flex-start;gap:4px}
+}
+</style>
+
+<div id="app"></div>
+
+<script>
+const STEPS = ['start','onboarding','research','strategy','positioning','naming','voice','visual','dashboard'];
+const STEP_NAMES = ['','Onboarding','Research','Strategia','Positioning','Naming','Tone of Voice','Visual','Brand DNA'];
+
+const state = {
+  step: 0,
+  data: {},
+  selected: {},
+  generated: null
+};
+
+function $(sel, ctx) { return (ctx||document).querySelector(sel) }
+function $$(sel, ctx) { return [...(ctx||document).querySelectorAll(sel)] }
+
+function render() {
+  const app = $('#app');
+  const stepIdx = state.step;
+  let topbar = '';
+  if (stepIdx > 0) {
+    topbar = `<div class="topbar">
+      <div class="topbar-logo">Brand <span>OS</span></div>
+      <div class="topbar-steps">
+        ${STEPS.slice(1).map((s,i) => {
+          let cls = 'step-dot';
+          if (i < stepIdx - 1) cls += ' done';
+          else if (i === stepIdx - 1) cls += ' active';
+          return `<div class="${cls}"></div>`;
+        }).join('')}
+        <span class="step-label">${STEP_NAMES[stepIdx] || ''} (${stepIdx}/${STEPS.length-2})</span>
+      </div>
+    </div>`;
+  }
+  const renderers = [renderWelcome, renderOnboarding, renderLoading, renderStrategy, renderPositioning, renderNaming, renderVoice, renderVisual, renderDashboard];
+  const body = renderers[stepIdx] ? renderers[stepIdx]() : '';
+  app.innerHTML = topbar + body;
+  setupListeners();
+}
+
+function renderWelcome() {
+  return `<div class="view"><div class="welcome fade-in">
+    <h1>Zbuduj swoją <span>markę</span></h1>
+    <p>Brand OS przeprowadzi Cię przez kompletny proces budowania strategii marki — od analizy rynku, przez pozycjonowanie, naming, aż po identyfikację wizualną. Jak zespół brandingowy, ale szybciej.</p>
+    <button class="btn btn-primary" data-action="start">Zacznij budować markę</button>
+  </div></div>`;
+}
+
+function renderOnboarding() {
+  const d = state.data;
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 1 / Onboarding</div>
+      <div class="step-title">Opowiedz nam o swoim biznesie</div>
+      <p class="step-desc">Te informacje pozwolą naszym agentom AI przygotować analizę rynku i strategię dopasowaną do Twojej sytuacji.</p>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Czym jest Twój biznes?</label>
+      <div class="form-hint">Opisz swój pomysł, produkt lub usługę w 2-3 zdaniach</div>
+      <textarea id="f-idea" placeholder="np. Tworzę autorskie mieszanki herbat funkcjonalnych, które pomagają w koncentracji i relaksie...">${d.idea||''}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kategoria / branża</label>
+      <select id="f-cat">
+        <option value="">Wybierz kategorię</option>
+        <option ${d.category==='Żywność i napoje'?'selected':''}>Żywność i napoje</option>
+        <option ${d.category==='Moda i odzież'?'selected':''}>Moda i odzież</option>
+        <option ${d.category==='Zdrowie i wellness'?'selected':''}>Zdrowie i wellness</option>
+        <option ${d.category==='Technologia'?'selected':''}>Technologia</option>
+        <option ${d.category==='Usługi profesjonalne'?'selected':''}>Usługi profesjonalne</option>
+        <option ${d.category==='E-commerce'?'selected':''}>E-commerce</option>
+        <option ${d.category==='Edukacja'?'selected':''}>Edukacja</option>
+        <option ${d.category==='Beauty i kosmetyki'?'selected':''}>Beauty i kosmetyki</option>
+        <option ${d.category==='Dom i wnętrza'?'selected':''}>Dom i wnętrza</option>
+        <option ${d.category==='Sport i fitness'?'selected':''}>Sport i fitness</option>
+        <option ${d.category==='Inna'?'selected':''}>Inna</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kto jest Twoim klientem?</label>
+      <div class="form-hint">Opisz idealnego klienta — wiek, styl życia, potrzeby, wartości</div>
+      <textarea id="f-target" placeholder="np. Profesjonaliści 25-40, pracujący zdalnie, szukający naturalnych sposobów na poprawę produktywności...">${d.target||''}</textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Jakie masz ambicje i cele?</label>
+      <textarea id="f-goals" placeholder="np. Chcę zbudować rozpoznawalną markę premium, sprzedawać online i w wybranych butikach...">${d.goals||''}</textarea>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="back">Wstecz</button>
+      <button class="btn btn-primary" data-action="submitOnboarding">Analizuj mój rynek</button>
+    </div>
+  </div>`;
+}
+
+function renderLoading() {
+  const messages = [
+    'Research Agent analizuje rynek i konkurencję...',
+    'Identyfikuję trendy w Twojej kategorii...',
+    'Analizuję język i potrzeby Twojej grupy docelowej...',
+    'Brand Strategist przygotowuje kierunki strategiczne...',
+    'Generuję propozycje pozycjonowania...',
+    'Naming Agent pracuje nad propozycjami nazw...',
+    'Przygotowuję pełną analizę...'
+  ];
+  setTimeout(() => {
+    let i = 0;
+    const el = $('#loading-msg');
+    if (!el) return;
+    const iv = setInterval(() => {
+      i++;
+      if (i < messages.length && $('#loading-msg')) {
+        $('#loading-msg').style.opacity = 0;
+        setTimeout(() => {
+          if ($('#loading-msg')) {
+            $('#loading-msg').textContent = messages[i];
+            $('#loading-msg').style.opacity = 1;
+          }
+        }, 200);
+      }
+    }, 1200);
+    setTimeout(() => {
+      clearInterval(iv);
+      state.generated = generateContent(state.data);
+      state.step = 3;
+      render();
+    }, 4000);
+  }, 100);
+  return `<div class="view"><div class="loading fade-in">
+    <div class="loader"></div>
+    <p id="loading-msg">${messages[0]}</p>
+  </div></div>`;
+}
+
+function generateContent(d) {
+  const idea = d.idea || 'Twój biznes';
+  const cat = d.category || 'Twoja kategoria';
+  const target = d.target || 'Twoja grupa docelowa';
+  const goals = d.goals || '';
+  const ideaShort = idea.length > 60 ? idea.substring(0, 60) + '...' : idea;
+
+  return {
+    research: {
+      market: `Rynek "${cat}" w Polsce dynamicznie rośnie, napędzany zmianą preferencji konsumentów w kierunku autentyczności, jakości i personalizacji. Segment, w którym operuje ${ideaShort}, ma potencjał wzrostu, szczególnie w kanale online i direct-to-consumer.`,
+      trends: [
+        `Rosnący popyt na produkty/usługi premium i autentyczne w kategorii ${cat.toLowerCase()}`,
+        `Konsumenci coraz częściej wybierają marki z wyraźną misją i wartościami — storytelling staje się kluczowym narzędziem sprzedaży`,
+        `Shift zakupowy do kanałów online i social commerce, szczególnie wśród młodszych demografii`,
+        `Wzrost znaczenia personalizacji i bezpośredniej relacji marka–klient`
+      ],
+      audience: `${target}. To osoby, które podejmują decyzje zakupowe w oparciu o wartości marki, jakość i rekomendacje społeczne. Cenią transparentność, estetykę komunikacji i spójne doświadczenie marki we wszystkich touchpointach.`,
+      opportunities: [
+        `Większość graczy w segmencie ${cat.toLowerCase()} nie inwestuje w profesjonalny branding — pole do wyróżnienia się jest otwarte`,
+        `Grupa docelowa aktywnie szuka marek, z którymi może się identyfikować — silna marka od startu to przewaga`,
+        `Kanał DTC (direct-to-consumer) pozwala na budowanie marży i bezpośredniej relacji bez pośredników`,
+        `Content marketing i social media dają możliwość budowania społeczności wokół marki przy niskim koszcie`
+      ]
+    },
+    strategies: [
+      {
+        name: 'Autentyczność i rzemiosło',
+        desc: `Zbuduj markę wokół autentycznej historii foundera i rzemieślniczego podejścia do jakości. Komunikuj transparentność procesu, pasję do detalu i osobistą misję stojącą za ${ideaShort}. Marka staje się synonimem autentyczności w kategorii ${cat.toLowerCase()}.`,
+        pillars: ['Historia foundera', 'Rzemieślnicza jakość', 'Transparentność'],
+        why: 'Najsilniejszy kierunek jeśli masz osobistą historię i chcesz budować lojalność przez autentyczność.'
+      },
+      {
+        name: 'Nowoczesny disruptor',
+        desc: `Pozycjonuj markę jako nowoczesną alternatywę, która zmienia zasady gry w kategorii ${cat.toLowerCase()}. Komunikuj innowacyjność, świeże podejście i lepsze rozwiązanie problemów, z którymi ${target.toLowerCase().substring(0,60)} mierzy się na co dzień.`,
+        pillars: ['Innowacyjność', 'Świeże podejście', 'Lepsze rozwiązanie'],
+        why: 'Najlepszy gdy widzisz wyraźne słabości konkurencji i masz produkt, który realnie je rozwiązuje.'
+      },
+      {
+        name: 'Społeczność i styl życia',
+        desc: `Zbuduj markę wokół społeczności ludzi, którzy dzielą wspólne wartości i styl życia. ${ideaShort} staje się nie tylko produktem, ale symbolem przynależności do grupy, która myśli i żyje w określony sposób.`,
+        pillars: ['Budowanie community', 'Shared values', 'Lifestyle brand'],
+        why: 'Optymalny jeśli Twoja grupa docelowa szuka poczucia przynależności i identyfikacji.'
+      }
+    ],
+    positionings: [
+      {
+        statement: `Dla ${target.split(',')[0]||target.split('.')[0]||'ludzi'}, którzy szukają czegoś więcej niż standardowa oferta w kategorii ${cat.toLowerCase()} — [Twoja Marka] to ${cat.toLowerCase() === 'inna' ? 'marka' : cat.toLowerCase().replace(/i /g,'/ ').split('/')[0]}, który łączy autentyczność z nowoczesnym podejściem, dostarczając doświadczenie, jakiego nie znajdziesz u masowych graczy.`,
+        angle: 'Autentyczność vs. masa'
+      },
+      {
+        statement: `[Twoja Marka] jest pierwszym ${cat.toLowerCase() === 'inna' ? 'brandem' : 'brandem w ' + cat.toLowerCase()}, który stawia ${target.includes('profesjonali') || target.includes('pracuj') ? 'profesjonalistów' : 'swoich klientów'} w centrum decyzji — od produktu, przez komunikację, po doświadczenie marki. Każdy element jest zaprojektowany z myślą o tym, czego naprawdę potrzebują.`,
+        angle: 'Customer-centric'
+      },
+      {
+        statement: `W świecie, gdzie ${cat.toLowerCase()} staje się comodity, [Twoja Marka] udowadnia, że jakość, estetyka i wartości mogą iść w parze. To marka dla tych, którzy nie godzą się na kompromisy i szukają produktu, który jest przedłużeniem ich stylu życia.`,
+        angle: 'Premium bez kompromisów'
+      }
+    ],
+    names: [
+      { name: 'Verve', rationale: 'Energia, pasja, witalność — krótkie, międzynarodowe, łatwe do zapamiętania', scores: [4,5,5,4] },
+      { name: 'Kova', rationale: 'Nowoczesne brzmienie, nawiązanie do rdzenia i fundamentów, unikalność', scores: [5,4,4,5] },
+      { name: 'Norde', rationale: 'Konotacje z estetyką skandynawską, czystość, prostota, premium feel', scores: [4,4,5,3] },
+      { name: 'Auro', rationale: 'Od "aura" — otoczka, energia marki, złote konotacje, premium', scores: [3,5,4,4] },
+      { name: 'Stoa', rationale: 'Filozofia, fundament, spokój i pewność siebie marki', scores: [5,3,4,5] }
+    ],
+    voice: {
+      traits: [
+        { name: 'Pewna, nie arogancka', desc: 'Marka mówi z pozycji eksperta, ale bez wywyższania się. Dzieli się wiedzą, nie pouczą.' },
+        { name: 'Ciepła, nie infantylna', desc: 'Komunikacja jest przystępna i ludzka, ale zachowuje profesjonalizm i dojrzałość.' },
+        { name: 'Konkretna, nie sucha', desc: 'Każde zdanie niesie wartość. Bez pustych sloganów, ale z emocjonalnym ładunkiem.' },
+        { name: 'Inspirująca, nie natrętna', desc: 'Motywuje do działania subtelnie — przez historię, przykład i wizję, nie przez presję.' }
+      ],
+      sample_social: `Nie musisz mieć wszystkiego poukładanego, żeby zacząć. Musisz mieć odwagę, żeby zrobić pierwszy krok. My zrobiliśmy swój — i teraz pomagamy innym znaleźć ich.`,
+      sample_email: `Twój brand to więcej niż logo — to obietnica, którą składasz każdego dnia`
+    },
+    visuals: [
+      {
+        name: 'Warm Minimal',
+        desc: 'Ciepła paleta z dominacją naturalnych tonów. Dużo białej przestrzeni, wyrafinowana typografia, fotografia z naturalnym światłem. Uczucie spokoju, jakości i przystępnego premium.',
+        colors: ['#2C2C2C','#E8DDD3','#C4953A','#F5F2ED','#7A6F64'],
+        typo: 'Serif display + geometric sans body'
+      },
+      {
+        name: 'Bold Contemporary',
+        desc: 'Odważne kontrasty, mocna typografia, dynamiczne layouty. Współczesna energia z elementami editorial design. Marka, która nie boi się zajmować stanowiska.',
+        colors: ['#1A1A2E','#E8E8E8','#D4503A','#F0F0F0','#16213E'],
+        typo: 'Condensed sans display + elegant serif body'
+      },
+      {
+        name: 'Soft Tech',
+        desc: 'Delikatne gradienty, zaokrąglone formy, pastelowe akcenty na czystym tle. Nowoczesność połączona z przyjaznością. Idealny dla marek, które łączą innowację z ludzkim podejściem.',
+        colors: ['#1E1E2E','#E0E7FF','#6366F1','#F8FAFC','#818CF8'],
+        typo: 'Rounded sans display + system sans body'
+      }
+    ]
+  };
+}
+
+function renderStrategy() {
+  const g = state.generated;
+  const sel = state.selected.strategy;
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 2 / Research + Strategia</div>
+      <div class="step-title">Analiza rynku i kierunki strategiczne</div>
+      <p class="step-desc">Research Agent przeanalizował Twój rynek. Brand Strategist przygotował 3 kierunki strategiczne. Wybierz ten, który najlepiej oddaje Twoją wizję.</p>
+    </div>
+
+    <div class="research-block">
+      <h3>Synteza rynku</h3>
+      <p style="font-size:.9rem;margin-bottom:12px">${g.research.market}</p>
+    </div>
+    <div class="research-block">
+      <h3>Kluczowe trendy</h3>
+      <ul>${g.research.trends.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>
+    <div class="research-block">
+      <h3>Szanse rynkowe</h3>
+      <ul>${g.research.opportunities.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>
+
+    <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin:32px 0 8px">Wybierz kierunek strategiczny</h3>
+    <p style="font-size:.88rem;color:var(--slate);margin-bottom:16px">Brand Strategist rekomenduje 3 kierunki. Kliknij, aby wybrać.</p>
+
+    <div class="option-grid">
+      ${g.strategies.map((s,i) => `
+        <div class="option-card${sel===i?' selected':''}" data-action="selectStrategy" data-idx="${i}">
+          <div class="card-badge">Wybrany</div>
+          <h3>${s.name}</h3>
+          <p>${s.desc}</p>
+          <div class="pillars">${s.pillars.map(p=>`<span class="pill">${p}</span>`).join('')}</div>
+          <p style="font-size:.8rem;color:var(--accent);margin-top:10px;font-family:var(--font-display);font-style:italic;margin-bottom:0">${s.why}</p>
+        </div>
+      `).join('')}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="goStep" data-step="1">Wstecz</button>
+      <button class="btn btn-primary" data-action="approveStrategy" ${sel==null?'disabled':''}>Zatwierdź kierunek</button>
+    </div>
+  </div>`;
+}
+
+function renderPositioning() {
+  const g = state.generated;
+  const sel = state.selected.positioning;
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 3 / Positioning</div>
+      <div class="step-title">Pozycjonowanie marki</div>
+      <p class="step-desc">Na podstawie wybranej strategii "${g.strategies[state.selected.strategy].name}" przygotowaliśmy 3 warianty pozycjonowania. Wybierz ten, który najlepiej definiuje Twoją markę.</p>
+    </div>
+    <div class="option-grid">
+      ${g.positionings.map((p,i) => `
+        <div class="option-card${sel===i?' selected':''}" data-action="selectPositioning" data-idx="${i}">
+          <div class="card-badge">Wybrany</div>
+          <h3 style="font-size:.88rem;font-weight:700;color:var(--accent);margin-bottom:6px">${p.angle}</h3>
+          <p style="font-size:.92rem;line-height:1.7;color:var(--ink);font-style:italic;margin-bottom:0">"${p.statement}"</p>
+        </div>
+      `).join('')}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="goStep" data-step="3">Wstecz</button>
+      <button class="btn btn-primary" data-action="approvePositioning" ${sel==null?'disabled':''}>Zatwierdź pozycjonowanie</button>
+    </div>
+  </div>`;
+}
+
+function renderNaming() {
+  const g = state.generated;
+  const sel = state.selected.naming;
+  const labels = ['Unikalność','Zapamiętywalność','Wymowa','Domena'];
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 4 / Naming</div>
+      <div class="step-title">Propozycje nazwy marki</div>
+      <p class="step-desc">Naming Agent wygenerował propozycje nazw z oceną w 4 kategoriach. Wybierz nazwę, która najlepiej reprezentuje Twoją markę.</p>
+    </div>
+    <div class="option-grid">
+      ${g.names.map((n,i) => `
+        <div class="option-card${sel===i?' selected':''}" data-action="selectNaming" data-idx="${i}">
+          <div class="card-badge">Wybrany</div>
+          <div class="name-card">
+            <div>
+              <h3 style="font-size:1.2rem;margin-bottom:4px">${n.name}</h3>
+              <p style="font-size:.84rem;margin-bottom:0">${n.rationale}</p>
+            </div>
+            <div class="name-scores">
+              ${n.scores.map((s,j) => `<div class="score-item"><div class="score-val">${s}/5</div><div class="score-label">${labels[j]}</div></div>`).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="goStep" data-step="4">Wstecz</button>
+      <button class="btn btn-primary" data-action="approveNaming" ${sel==null?'disabled':''}>Zatwierdź nazwę</button>
+    </div>
+  </div>`;
+}
+
+function renderVoice() {
+  const g = state.generated;
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 5 / Tone of Voice</div>
+      <div class="step-title">Głos Twojej marki</div>
+      <p class="step-desc">Na podstawie strategii i pozycjonowania, Brand Strategist zdefiniował ton komunikacji marki ${g.names[state.selected.naming].name}.</p>
+    </div>
+
+    <div class="research-block">
+      <h3>Cechy głosu marki</h3>
+      ${g.voice.traits.map(t => `<div class="voice-trait"><div class="trait-name">${t.name}</div><div class="trait-desc">${t.desc}</div></div>`).join('')}
+    </div>
+
+    <div class="research-block">
+      <h3>Przykładowy post social media</h3>
+      <p style="font-size:.92rem;font-style:italic;line-height:1.7;margin-bottom:0">"${g.voice.sample_social}"</p>
+    </div>
+
+    <div class="research-block">
+      <h3>Przykładowy temat e-mail</h3>
+      <p style="font-size:.92rem;font-style:italic;margin-bottom:0">"${g.voice.sample_email}"</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="goStep" data-step="5">Wstecz</button>
+      <button class="btn btn-primary" data-action="approveVoice">Zatwierdź tone of voice</button>
+    </div>
+  </div>`;
+}
+
+function renderVisual() {
+  const g = state.generated;
+  const sel = state.selected.visual;
+  return `<div class="view fade-in">
+    <div class="step-header">
+      <div class="step-eyebrow">Krok 6 / Visual Direction</div>
+      <div class="step-title">Kierunek wizualny</div>
+      <p class="step-desc">Creative Director przygotował 3 koncepcje wizualne dla marki ${g.names[state.selected.naming].name}. Wybierz styl, który najlepiej oddaje charakter Twojej marki.</p>
+    </div>
+    <div class="option-grid">
+      ${g.visuals.map((v,i) => `
+        <div class="option-card${sel===i?' selected':''}" data-action="selectVisual" data-idx="${i}">
+          <div class="card-badge">Wybrany</div>
+          <h3>${v.name}</h3>
+          <p>${v.desc}</p>
+          <div class="palette">${v.colors.map(c=>`<div class="swatch" style="background:${c}" title="${c}"></div>`).join('')}</div>
+          <p style="font-size:.78rem;color:var(--slate);font-family:var(--font-mono);margin-bottom:0">${v.typo}</p>
+        </div>
+      `).join('')}
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" data-action="goStep" data-step="6">Wstecz</button>
+      <button class="btn btn-primary" data-action="approveVisual" ${sel==null?'disabled':''}>Zatwierdź kierunek wizualny</button>
+    </div>
+  </div>`;
+}
+
+function renderDashboard() {
+  const g = state.generated;
+  const d = state.data;
+  const strategy = g.strategies[state.selected.strategy];
+  const positioning = g.positionings[state.selected.positioning];
+  const name = g.names[state.selected.naming];
+  const visual = g.visuals[state.selected.visual];
+  return `<div class="view wide fade-in">
+    <div class="step-header" style="text-align:center;margin-bottom:40px">
+      <div class="step-eyebrow">Brand DNA Dashboard</div>
+      <div class="step-title" style="font-size:1.8rem">${name.name}</div>
+      <p class="step-desc">Twoja strategia marki jest gotowa. Poniżej znajdziesz wszystkie zatwierdzone decyzje — Twoje Brand DNA.</p>
+    </div>
+
+    <div class="dna-section">
+      <h3>Biznes</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value">${d.idea}</p>
+      <span class="dna-tag">${d.category}</span>
+    </div>
+
+    <div class="dna-section">
+      <h3>Grupa docelowa</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value">${d.target}</p>
+    </div>
+
+    <div class="dna-section">
+      <h3>Strategia marki</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value" style="font-weight:700;font-family:var(--font-display)">${strategy.name}</p>
+      <p class="dna-value">${strategy.desc}</p>
+      <div>${strategy.pillars.map(p=>`<span class="dna-tag">${p}</span>`).join('')}</div>
+    </div>
+
+    <div class="dna-section">
+      <h3>Pozycjonowanie</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value" style="font-style:italic">"${positioning.statement}"</p>
+      <span class="dna-tag">${positioning.angle}</span>
+    </div>
+
+    <div class="dna-section">
+      <h3>Nazwa marki</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value" style="font-size:1.4rem;font-family:var(--font-display);font-weight:800">${name.name}</p>
+      <p class="dna-value" style="font-size:.88rem;color:var(--slate)">${name.rationale}</p>
+    </div>
+
+    <div class="dna-section">
+      <h3>Tone of voice</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <div>${g.voice.traits.map(t=>`<span class="dna-tag">${t.name}</span>`).join('')}</div>
+    </div>
+
+    <div class="dna-section">
+      <h3>Kierunek wizualny</h3>
+      <div class="dna-approved">Zatwierdzone</div>
+      <p class="dna-value" style="font-family:var(--font-display);font-weight:700">${visual.name}</p>
+      <p class="dna-value" style="font-size:.88rem;color:var(--slate)">${visual.desc}</p>
+      <div class="palette">${visual.colors.map(c=>`<div class="swatch" style="background:${c}" title="${c}"></div>`).join('')}</div>
+    </div>
+
+    <div class="cta-bar">
+      <div>
+        <p><strong>Twój Brand DNA jest gotowy.</strong><br>Pobierz pełny Brand Book w formacie PDF z kompletnym systemem identyfikacji, guidelines i materiałami startowymi.</p>
+      </div>
+      <button class="btn btn-primary" onclick="alert('Eksport Brand Book będzie dostępny w pełnej wersji Brand OS. Dziękujemy za przetestowanie!')">Eksportuj Brand Book</button>
+    </div>
+
+    <div class="btn-row" style="justify-content:center;margin-top:24px">
+      <button class="btn btn-ghost" data-action="goStep" data-step="0">Zacznij od nowa</button>
+    </div>
+  </div>`;
+}
+
+function setupListeners() {
+  $$('[data-action]').forEach(el => {
+    el.addEventListener('click', e => {
+      const action = el.dataset.action;
+      const idx = parseInt(el.dataset.idx);
+
+      if (action === 'start') { state.step = 1; render(); }
+      if (action === 'back') { state.step = Math.max(0, state.step - 1); render(); }
+      if (action === 'goStep') { state.step = parseInt(el.dataset.step); render(); }
+
+      if (action === 'submitOnboarding') {
+        const idea = $('#f-idea').value.trim();
+        const cat = $('#f-cat').value;
+        const target = $('#f-target').value.trim();
+        const goals = $('#f-goals').value.trim();
+        if (!idea || !cat || !target) { alert('Uzupełnij przynajmniej opis biznesu, kategorię i grupę docelową.'); return; }
+        state.data = { idea, category: cat, target, goals };
+        state.step = 2;
+        render();
+      }
+
+      if (action === 'selectStrategy') {
+        state.selected.strategy = idx;
+        $$('.option-card').forEach(c => c.classList.remove('selected'));
+        el.closest('.option-card').classList.add('selected');
+        const btn = $('[data-action="approveStrategy"]');
+        if (btn) btn.disabled = false;
+        $$('.option-card .card-badge').forEach(b => b.style.opacity = 0);
+        el.closest('.option-card').querySelector('.card-badge').style.opacity = 1;
+      }
+      if (action === 'approveStrategy') { if (state.selected.strategy != null) { state.step = 4; render(); } }
+
+      if (action === 'selectPositioning') {
+        state.selected.positioning = idx;
+        $$('.option-card').forEach(c => c.classList.remove('selected'));
+        el.closest('.option-card').classList.add('selected');
+        const btn = $('[data-action="approvePositioning"]');
+        if (btn) btn.disabled = false;
+        $$('.option-card .card-badge').forEach(b => b.style.opacity = 0);
+        el.closest('.option-card').querySelector('.card-badge').style.opacity = 1;
+      }
+      if (action === 'approvePositioning') { if (state.selected.positioning != null) { state.step = 5; render(); } }
+
+      if (action === 'selectNaming') {
+        state.selected.naming = idx;
+        $$('.option-card').forEach(c => c.classList.remove('selected'));
+        el.closest('.option-card').classList.add('selected');
+        const btn = $('[data-action="approveNaming"]');
+        if (btn) btn.disabled = false;
+        $$('.option-card .card-badge').forEach(b => b.style.opacity = 0);
+        el.closest('.option-card').querySelector('.card-badge').style.opacity = 1;
+      }
+      if (action === 'approveNaming') { if (state.selected.naming != null) { state.step = 6; render(); } }
+
+      if (action === 'approveVoice') { state.step = 7; render(); }
+
+      if (action === 'selectVisual') {
+        state.selected.visual = idx;
+        $$('.option-card').forEach(c => c.classList.remove('selected'));
+        el.closest('.option-card').classList.add('selected');
+        const btn = $('[data-action="approveVisual"]');
+        if (btn) btn.disabled = false;
+        $$('.option-card .card-badge').forEach(b => b.style.opacity = 0);
+        el.closest('.option-card').querySelector('.card-badge').style.opacity = 1;
+      }
+      if (action === 'approveVisual') { if (state.selected.visual != null) { state.step = 8; render(); } }
+    });
+  });
+
+  $$('.option-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const actionEl = card.querySelector('[data-action]') || card;
+      if (actionEl.dataset.action) actionEl.click();
+    });
+  });
+}
+
+render();
+</script>
